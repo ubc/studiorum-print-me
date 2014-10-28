@@ -66,6 +66,9 @@
 				// Add 'print' to the query vars
 				add_filter( 'query_vars', array( $this, 'query_vars__addPrintQueryVar' ) );
 
+				// Append to the 'this is one of your submissions' message above a user's submission
+				add_filter( 'studiorum_lectio_author_note_above_submission', array( $this, 'studiorum_lectio_author_note_above_submission__addPrintMeMessage' ), 99 );
+
 			}/* __construct() */
 
 
@@ -104,6 +107,53 @@
 
 			}/* query_vars__addPrintQueryVar() */
 			
+			
+			/**
+			 * Append a link to print this particular submission
+			 *
+			 * @author Richard Tape <@richardtape>
+			 * @since 1.0
+			 * @param (string) $message - the original message
+			 * @return (string) $message - updated message with an additional link to print this page
+			 */
+			
+			public function studiorum_lectio_author_note_above_submission__addPrintMeMessage( $message )
+			{
+
+				// Form the permalink - which is the current link with '/print' added to the end
+				$additionalMessage = static::_generateLinkMessage( $postID );
+
+				return $message . ' ' . $additionalMessage;
+
+			}/* studiorum_lectio_author_note_above_submission__addPrintMeMessage() */
+
+
+			/**
+			 * A utility method to help generate a message with a link to print the submission
+			 *
+			 * @author Richard Tape <@richardtape>
+			 * @since 1.0
+			 * @param (int) $postID - the ID for which to generate the print me link
+			 * @return (string) $message - A message with a link to print the submission
+			 */
+			
+			public static function _generateLinkMessage( $postID = false )
+			{
+
+				if( !$postID ){
+					$postID = get_the_ID();
+				}
+
+				$permalink = get_permalink( $postID );
+
+				$messageLink = untrailingslashit( $permalink ) . '/print';
+
+				$messageText = __( 'Print this submission', 'studiorum-print-me' );
+				$message = '<a class="studiorum-print-me-link" href="' . $messageLink . '" title="">' . $messageText . '</a>';
+
+				return $message;
+
+			}/* _generateLinkMessage() */
 			
 
 		}/* class Studiorum_Print_Me */
