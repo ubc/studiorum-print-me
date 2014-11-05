@@ -120,8 +120,10 @@
 			public function studiorum_lectio_author_note_above_submission__addPrintMeMessage( $message )
 			{
 
+				global $post_id;
+
 				// Form the permalink - which is the current link with '/print' added to the end
-				$additionalMessage = static::_generateLinkMessage( $postID );
+				$additionalMessage = static::_generateLinkMessage( $post_id );
 
 				return $message . ' ' . $additionalMessage;
 
