@@ -69,6 +69,9 @@
 				// Append to the 'this is one of your submissions' message above a user's submission
 				add_filter( 'studiorum_lectio_author_note_above_submission', array( $this, 'studiorum_lectio_author_note_above_submission__addPrintMeMessage' ), 99 );
 
+				// Register ourself as an addon
+				add_filter( 'studiorum_modules', array( $this, 'studiorum_modules__registerAsModule' ) );
+
 			}/* __construct() */
 
 
@@ -128,6 +131,41 @@
 				return $message . ' ' . $additionalMessage;
 
 			}/* studiorum_lectio_author_note_above_submission__addPrintMeMessage() */
+
+
+			/**
+			 * Register ourself as a studiorum addon, so it's available in the main studiorum page
+			 *
+			 * @since 0.1
+			 *
+			 * @param array $modules Currently registered modules
+			 * @return array $modules modified list of modules
+			 */
+
+			public function studiorum_modules__registerAsModule( $modules )
+			{
+
+				if( !$modules || !is_array( $modules ) ){
+					$modules = array();
+				}
+
+				$modules['studiorum-print-me'] = array(
+					'id' 				=> 'studiorum_print_me',
+					'plugin_slug'		=> 'studiorum-print-me',
+					'title' 			=> __( 'Submissions Print Stylesheet', 'studiorum' ),
+					'requires'			=> 'lectio',
+					'icon' 				=> 'desktop', // dashicons-#
+					'excerpt' 			=> __( 'Add a print stylesheet and /print/ url for lectio submissions. Includes side comments.', 'studiorum' ),
+					'image' 			=> 'http://dummyimage.com/310/162',
+					'link' 				=> 'http://code.ubc.ca/studiorum/studiorum-print-me',
+					'content' 			=> __( '<p>Combining Lectio and Side Comments, you have a powerful tool from which your students can submit and self/pier-assess. But, if your student prefers to print out and have a hard copy of their work and the associated comments, due to the nature of the inline comments, this isn\'t easy.</p><p>This module enables your students to simply append /print/ to the url of their submissions to see a beautiful, clean, easy-to-read page with their submission with all the inline comments directly below the paragraph to which they are related as well as having the linear comments at the bottom.</p>', 'studiorum' ),
+					'content_sidebar' 	=> 'http://dummyimage.com/300x150',
+					'date'				=> '2014-09-01'
+				);
+
+				return $modules;
+
+			}/* studiorum_modules__registerAsModule() */
 
 
 			/**
