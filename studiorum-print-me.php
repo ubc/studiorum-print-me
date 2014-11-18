@@ -61,7 +61,7 @@
 			{
 
 				// Custom 'print' endpoint
-				add_action( 'init', array( $this, 'ini__addPrintEndpoint' ) );
+				add_action( 'init', array( $this, 'init__addPrintEndpoint' ) );
 
 				// Add 'print' to the query vars
 				add_filter( 'query_vars', array( $this, 'query_vars__addPrintQueryVar' ) );
@@ -78,12 +78,12 @@
 			 * @return null
 			 */
 			
-			public function ini__addPrintEndpoint()
+			public function init__addPrintEndpoint()
 			{
 
 				add_rewrite_endpoint( 'print', EP_PERMALINK );
 
-			}/* ini__addPrintEndpoint() */
+			}/* init__addPrintEndpoint() */
 
 
 			/**
